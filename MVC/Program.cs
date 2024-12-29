@@ -1,17 +1,51 @@
 using BLL.DAL;
+using BLL.Models;
 using BLL.Services;
+using BLL.Services.Bases;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// AppSettings
+var appSettingsSection = builder.Configuration.GetSection(nameof(AppSettings));
+appSettingsSection.Bind(new AppSettings());
+
 // IoC Container
-string connectionString = "server=(localdb)\\mssqllocaldb;database=LibraryDB;trusted_connection=true;";
-builder.Services.AddDbContext<Db>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<IBookService, BookService>();
+var connectionString = builder.Configuration.GetConnectionString("Db");
+builder.Services.AddDbContext<Db>(options => 
+    options.UseMySql(
+        connectionString,
+        new MySqlServerVersion(new Version(8, 0, 30)) // Ensure this matches your MySQL version
+    )
+);
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IService<Student,StudentModel>, StudentService>();
+builder.Services.AddScoped<IService<Teacher,TeacherModel>, TeacherService>();
+builder.Services.AddScoped<IService<Major, MajorModel>, MajorService>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<HttpServiceBase, HttpService>();
+
+// Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Users/Login";
+        options.AccessDeniedPath = "/Users/Login";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
 
 var app = builder.Build();
 
@@ -19,7 +53,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -28,7 +61,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Authentication
+app.UseAuthentication();
+
 app.UseAuthorization();
+
+// Session
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

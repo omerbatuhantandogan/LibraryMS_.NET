@@ -1,7 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var userName = User.Identity.IsAuthenticated ? "Dear User:" + User.Identity.Name : string.Empty;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome Library Management System!</h1>
+    <h1 class="display-4">Welcome @AppSettings.Title</h1>
+    <h1 class="bg-danger text-light w-50 mx-auto">@userName</h1>
+    <p>@AppSettings.Description</p>
 </div>

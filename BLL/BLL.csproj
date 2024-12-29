@@ -7,16 +7,49 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
-      <PrivateAssets>all</PrivateAssets>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\net8.0\BLL.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\net8.0\BLL.GlobalUsings.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="obj\BLL.csproj.nuget.dgspec.json" />
+    <Content Include="obj\Debug\net8.0\BLL.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\net8.0\BLL.sourcelink.json" />
+    <Content Include="obj\project.assets.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	 <FrameworkReference Include="Microsoft.AspNetCore.App" />
+	 <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="obj\BLL.csproj.nuget.g.props" />
+    <None Include="obj\BLL.csproj.nuget.g.targets" />
+    <None Include="obj\Debug\net8.0\BLL.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\net8.0\BLL.assets.cache" />
+    <None Include="obj\Debug\net8.0\BLL.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\net8.0\BLL.csproj.BuildWithSkipAnalyzers" />
+    <None Include="obj\Debug\net8.0\BLL.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\net8.0\BLL.dll" />
+    <None Include="obj\Debug\net8.0\BLL.GeneratedMSBuildEditorConfig.editorconfig" />
+    <None Include="obj\Debug\net8.0\BLL.pdb" />
+    <None Include="obj\Debug\net8.0\refint\BLL.dll" />
+    <None Include="obj\Debug\net8.0\ref\BLL.dll" />
+    <None Include="obj\project.nuget.cache" />
   </ItemGroup>
 
 </Project>
